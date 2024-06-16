@@ -248,14 +248,14 @@ class Option:
 
 def lambda_handler(event, context):
     body = json.loads(event['body'])
-    # option = Option(
-    #     float(body['rate']),
-    #     float(body['strike']),
-    #     float(body['term']),
-    #     float(body['iterations']),
-    #     float(body['sigma']),
-    # )
-    premium = str(6.1)
+    option = Option(
+        float(body['rate']),
+        float(body['strike']),
+        float(body['term']),
+        float(body['iterations']),
+        float(body['sigma']),
+    )
+    premium = str(option.premium)
     res = {
         "statusCode": 200,
         "headers": {
