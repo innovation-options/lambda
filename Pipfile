@@ -4,10 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-ipython = "*"
 requests = "*"
 
 [dev-packages]
+ipython = "*"
+awscli = "*"
+aws-sam-cli = "*"
 
 [requires]
 python_version = "3.12"
