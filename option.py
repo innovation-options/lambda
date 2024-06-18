@@ -246,31 +246,41 @@ class Option:
     def premium(self):
         return self.value_tree[0][0]
 
+
+    def as_dict(self):
+        return {
+            'rate': self.rate,
+            'strike': self.strike,
+            'term': self.term,
+            'iterations': self.iterations,
+            'sigma': self.sigma,
+            'premium': self.premium,
+        }
+
+    def as_json(self):
+        return json.dumps(self.as_dict())
+
 def lambda_handler(event, context):
-    body = json.loads(event['body'])
+    inputs = json.loads(event['body'])
+    # inputs = {
+    #     'rate': .05,
+    #     'strike': 20,
+    #     'term': 1,
+    #     'iterations': 12,
+    #     'sigma': .75,
+    # }
     option = Option(
-        float(body['rate']),
-        float(body['strike']),
-        float(body['term']),
-        float(body['iterations']),
-        float(body['sigma']),
+        float(inputs['rate']),
+        float(inputs['strike']),
+        float(inputs['term']),
+        float(inputs['iterations']),
+        float(inputs['sigma']),
     )
-    premium = str(option.premium)
     res = {
         "statusCode": 200,
         "headers": {
-            "Content-Type": "*/*"
+            "Content-Type": "application/json"
         },
-        "body": premium
+        "body": option.as_json()
     }
     return res
-# def lambda_handler(event, context):
-#     body = json.loads(event['body'])
-#     res = {
-#         "statusCode": 200,
-#         "headers": {
-#             "Content-Type": "*/*"
-#         },
-#         "body": f'Hello, {body['greeter']}!'
-#     }
-#     return res
