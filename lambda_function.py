@@ -264,7 +264,7 @@ def lambda_handler(event, context):
         # "headers": {
         #     "Content-Type": "application/json"
         # },
-        "body": {'strike': str(event['strike'])}
+        "body": {'1': str(event['strike'])}
 
     }
     return res
