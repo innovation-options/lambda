@@ -1,5 +1,5 @@
 import json
-# from collections import OrderedDict
+from collections import OrderedDict
 from math import exp, log, pow, sqrt
 from operator import mul, sub
 from operator import truediv as div
@@ -169,11 +169,11 @@ class Option:
                 )
             )
             i += 1
-        # v = OrderedDict(
-        #     sorted(
-        #         v.items(),
-        #     )
-        # )
+        v = OrderedDict(
+            sorted(
+                v.items(),
+            )
+        )
         return v
 
     @property
@@ -187,12 +187,12 @@ class Option:
                 0.0
             )
             i += 1
-        # p = OrderedDict(
-        #     sorted(
-        #         p.items(),
-        #         reverse=True,
-        #     )
-        # )
+        p = OrderedDict(
+            sorted(
+                p.items(),
+                reverse=True,
+            )
+        )
         return p
 
     @property
@@ -227,19 +227,19 @@ class Option:
                     )
                 )
                 i += 1
-            # out = OrderedDict(
-            #     sorted(
-            #         out.items(),
-            #         reverse=True,
-            #     )
-            # )
+            out = OrderedDict(
+                sorted(
+                    out.items(),
+                    reverse=True,
+                )
+            )
             v[j] = out
             j -= 1
-        # v = OrderedDict(
-        #     sorted(
-        #         v.items(),
-        #     )
-        # )
+        v = OrderedDict(
+            sorted(
+                v.items(),
+            )
+        )
         return v
 
     @property
