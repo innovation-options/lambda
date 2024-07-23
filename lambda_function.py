@@ -251,19 +251,15 @@ class Option:
         return json.dumps(self.value_tree)
 
 def lambda_handler(event, context):
-    # inputs = json.loads(event['body'])
-    # option = Option(
-    #     float(inputs['rate']),
-    #     float(inputs['strike']),
-    #     float(inputs['term']),
-    #     float(inputs['iterations']),
-    #     float(inputs['sigma']),
-    # )
+    option = Option(
+        float(event['rate']),
+        float(event['strike']),
+        float(event['term']),
+        float(event['iterations']),
+        float(event['sigma']),
+    )
     res = {
         "statusCode": 200,
-        # "headers": {
-        #     "Content-Type": "application/json"
-        # },
         "body": option.value_tree,
     }
     return res
