@@ -252,11 +252,11 @@ class Option:
 
 def lambda_handler(event, context):
     option = Option(
-        float(event['rate']),
-        float(event['strike']),
-        float(event['term']),
-        float(event['iterations']),
-        float(event['sigma']),
+        event['rate'],
+        event['strike'],
+        event['term'],
+        event['iterations'],
+        event['sigma'],
     )
     res = {
         "statusCode": 200,
