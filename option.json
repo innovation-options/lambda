@@ -1,7 +1,7 @@
 {
-    "strike": "20",
-    "rate": ".05",
-    "term": "1",
-    "iterations": "4",
-    "sigma": ".75"
+    "strike": 20,
+    "rate": 0.05,
+    "term": 1,
+    "iterations": 4,
+    "sigma": 0.75
 }
