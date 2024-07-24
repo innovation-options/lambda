@@ -219,6 +219,40 @@ class Option:
             j -= 1
         return v
 
+    @property
+    def premium(self):
+        return self.value_tree[0][0]
+
+def compound_medium(sigma):
+    zero = Option(
+        strike=20.0,
+        term=1.0,
+        iterations=4,
+        sigma=sigma,
+    )
+    one = Option(
+        strike=zero.premium,
+        term=.5,
+        iterations=6,
+        sigma=sigma,
+    )
+    two = Option(
+        strike=one.premium,
+        term=.25,
+        iterations=6,
+        sigma=sigma,
+    )
+    three = Option(
+        strike=two.premium,
+        term=.08,
+        iterations=6,
+        sigma=sigma,
+    )
+    return three.premium
+
+
+
+
 
 def lambda_handler(event, context):
     option = Option(
