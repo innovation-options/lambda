@@ -251,7 +251,22 @@ def compound_medium(sigma):
     return three.premium
 
 
-
+def compound_option(rate=.05, strike=20000000, term=1, iterations=4, sigma=.75, tranches=4):
+    tranch = 0
+    compound = {}
+    while tranch >= -tranches:
+        option = Option(
+            strike=strike,
+            term=term,
+            iterations=iterations,
+            sigma=sigma,
+            rate=rate
+        )
+        compound[str(tranch)] = option
+        strike = option.premium
+        term = term / 2
+        tranch -= 1
+    return compound
 
 
 def lambda_handler(event, context):
