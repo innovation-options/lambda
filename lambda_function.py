@@ -58,7 +58,7 @@ class Option:
                     ),
                     exp(
                         mul(
-                            -(self.sigma),
+                            -self.sigma,
                             sqrt(
                                 div(
                                     self.delta_t,
@@ -82,7 +82,7 @@ class Option:
                     ),
                     exp(
                         mul(
-                            -(self.sigma),
+                            -self.sigma,
                             sqrt(
                                 div(
                                     self.delta_t,
@@ -136,7 +136,7 @@ class Option:
                     ),
                     exp(
                         mul(
-                            -(self.sigma),
+                            -self.sigma,
                             sqrt(
                                 div(
                                     self.delta_t,
@@ -158,7 +158,7 @@ class Option:
     def spot_tree(self):
         """ Step One: Find Spot Value at Terminus."""
         v = {}
-        i = -(self.iterations)
+        i = -self.iterations
         while i <= self.iterations:
             v[i] = mul(
                 self.strike,
@@ -174,7 +174,7 @@ class Option:
     def term_value(self):
         """ Step Two: Find Option Value at Terminus."""
         p = self.spot_tree
-        i = -(self.iterations)
+        i = -self.iterations
         while i <= self.iterations:
             p[i] = max(
                 p[i] - self.strike,
@@ -191,13 +191,13 @@ class Option:
         v[self.iterations] = p
         j = self.iterations - 1
         while j >= 0:
-            i = -(j)
+            i = -j
             out = {}
             while i <= j:
                 out[i] = mul(
                     exp(
                         mul(
-                            -(float(self.rate)),
+                            -float(self.rate),
                             self.delta_t
                         )
                     ),
@@ -223,62 +223,84 @@ class Option:
     def premium(self):
         return self.value_tree[0][0]
 
-def compound_medium(sigma):
-    zero = Option(
-        strike=20.0,
-        term=1.0,
-        iterations=4,
-        sigma=sigma,
-    )
-    one = Option(
-        strike=zero.premium,
-        term=.5,
-        iterations=6,
-        sigma=sigma,
-    )
-    two = Option(
-        strike=one.premium,
-        term=.25,
-        iterations=6,
-        sigma=sigma,
-    )
-    three = Option(
-        strike=two.premium,
-        term=.08,
-        iterations=6,
-        sigma=sigma,
-    )
-    return three.premium
+    def __str__(self):
+        return f'Premium: {self.premium}'
 
+
+def get_option(rate=.05, strike=20000000, term=1, iterations=4, sigma=.75):
+    option = Option(
+        strike=strike,
+        term=term,
+        iterations=iterations,
+        sigma=sigma,
+        rate=rate
+    )
+    return {
+        'premium': option.premium,
+        'term': option.term,
+        'strike': option.strike,
+        'iterations': option.iterations,
+        'sigma': option.sigma,
+        'rate': option.rate,
+        'value_tree': option.value_tree
+    }
+
+
+def option_handler(event, context):
+    rate = event['rate']
+    strike = event['strike']
+    term = event['term']
+    iterations = event['iterations']
+    sigma = event['sigma']
+    option = single_option(
+        rate=rate,
+        strike=strike,
+        term=term,
+        iterations=iterations,
+        sigma=sigma,
+    )
+    res = {
+        "statusCode": 200,
+        "body": option,
+    }
+    return res
 
 def compound_option(rate=.05, strike=20000000, term=1, iterations=4, sigma=.75, tranches=4):
     tranch = 0
     compound = {}
-    while tranch >= -(tranches):
-        option = Option(
+    while tranch > -tranches:
+        tranch_number = tranch + tranches
+        option = get_option(
+            rate=rate,
             strike=strike,
             term=term,
             iterations=iterations,
             sigma=sigma,
-            rate=rate
         )
-        compound[str(tranch)] = option
-        strike = option.premium
+        compound[f'tranch-{tranch_number}'] = option
+        strike = option['premium']
         term = term / 2
         tranch -= 1
     return compound
 
 
-def lambda_handler(event, context):
-    option = Option(
-        event['rate'],
-        event['strike'],
-        event['term'],
-        event['iterations'],
-        event['sigma'],
+def compound_handler(event, context):
+    rate = event['rate']
+    strike = event['strike']
+    term = event['term']
+    iterations = event['iterations']
+    sigma = event['sigma']
+    tranches = event['tranches']
+    compound = compound_option(
+        rate=rate,
+        strike=strike,
+        term=term,
+        iterations=iterations,
+        sigma=sigma,
+        tranches=tranches,
     )
     res = {
         "statusCode": 200,
-        "body": option.value_tree,
+        "body": compound,
     }
     return res
