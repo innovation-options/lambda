@@ -8,11 +8,19 @@ jobs:
     steps:
       - name: checkout source code
         uses: actions/checkout@v4
-      - name: default deploy
-        uses: appleboy/lambda-action@v0.2.0
+      - name: Deploy CalculateOption
+        uses: appleboy/lambda-action@master
         with:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: us-west-2
           function_name: CalculateOption
           source: lambda_function.py
+      - name: Deploy CalculateCompound
+        uses: appleboy/lambda-action@master
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ env.AWS_REGION }}
+          function_name: CalculateCompound
+          source: compound_function.py
