@@ -252,7 +252,7 @@ def option_handler(event, context):
     term = event['term']
     iterations = event['iterations']
     sigma = event['sigma']
-    option = single_option(
+    option = get_option(
         rate=rate,
         strike=strike,
         term=term,
