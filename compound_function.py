@@ -3,8 +3,6 @@ from math import exp, log, pow, sqrt
 from operator import mul, sub
 from operator import truediv as div
 
-import humanize
-
 
 class Option:
     def __init__(self, rate=.05, strike=20, term=1, iterations=4, sigma=.75):
@@ -269,8 +267,10 @@ def compound_option(rate=.05, strike=20000000, term=1, iterations=4, sigma=.75, 
             'premium': option.premium,
             'term': option.term,
             'strike': option.strike,
-            'funding': humanize.intcomma(option.premium, 0),
-            'humanize': humanize.naturaldelta(option.term * 365.25 * 86400, months=False)
+            'tranch': tranch,
+            'iterations': iterations,
+            'sigma': sigma,
+            'rate': rate,
         }
         strike = option.premium
         term = term / 2
