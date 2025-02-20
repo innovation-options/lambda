@@ -58,7 +58,7 @@ class Option:
                     ),
                     exp(
                         mul(
-                            -self.sigma,
+                            -(self.sigma),
                             sqrt(
                                 div(
                                     self.delta_t,
@@ -82,7 +82,7 @@ class Option:
                     ),
                     exp(
                         mul(
-                            -self.sigma,
+                            -(self.sigma),
                             sqrt(
                                 div(
                                     self.delta_t,
@@ -136,7 +136,7 @@ class Option:
                     ),
                     exp(
                         mul(
-                            -self.sigma,
+                            -(self.sigma),
                             sqrt(
                                 div(
                                     self.delta_t,
@@ -158,7 +158,7 @@ class Option:
     def spot_tree(self):
         """ Step One: Find Spot Value at Terminus."""
         v = {}
-        i = -self.iterations
+        i = -(self.iterations)
         while i <= self.iterations:
             v[i] = mul(
                 self.strike,
@@ -174,7 +174,7 @@ class Option:
     def term_value(self):
         """ Step Two: Find Option Value at Terminus."""
         p = self.spot_tree
-        i = -self.iterations
+        i = -(self.iterations)
         while i <= self.iterations:
             p[i] = max(
                 p[i] - self.strike,
@@ -191,13 +191,13 @@ class Option:
         v[self.iterations] = p
         j = self.iterations - 1
         while j >= 0:
-            i = -j
+            i = -(j)
             out = {}
             while i <= j:
                 out[i] = mul(
                     exp(
                         mul(
-                            -float(self.rate),
+                            -(float(self.rate)),
                             self.delta_t
                         )
                     ),
@@ -254,7 +254,7 @@ def compound_medium(sigma):
 def compound_option(rate=.05, strike=20000000, term=1, iterations=4, sigma=.75, tranches=4):
     tranch = 0
     compound = {}
-    while tranch >= -tranches:
+    while tranch >= -(tranches):
         option = Option(
             strike=strike,
             term=term,
