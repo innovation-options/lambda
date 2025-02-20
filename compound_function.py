@@ -275,7 +275,7 @@ def compound_option(rate=.05, strike=20000000, term=1, iterations=4, sigma=.75, 
         strike = option.premium
         term = term / 2
         tranch -= 1
-    return json.dumps(compound)
+    return compound
 
 
 def lambda_handler(event, context):
